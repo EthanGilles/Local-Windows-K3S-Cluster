@@ -109,7 +109,14 @@ because of the ansible playbook.
    kubectl get nodes
    ```
 
-   You should see output showing your master and worker nodes in the `Ready` state.
+   You should see output showing your master and worker nodes in the `Ready` state similar to this:
+
+   ```console
+    NAME      STATUS   ROLES                  AGE   VERSION
+    master    Ready    control-plane,master   17m   v1.32.4+k3s1
+    worker1   Ready    <none>                 17m   v1.32.4+k3s1
+    worker2   Ready    <none>                 17m   v1.32.4+k3s1
+   ```
 
 ---
 
