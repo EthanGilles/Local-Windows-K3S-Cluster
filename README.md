@@ -34,6 +34,14 @@ All from a **Windows host machine** using **PowerShell**.
 
 ## Requirements
 
+To run this project there are a few dependencies you must install first.
+
+* **Chocolatey** - package manager
+* **Vagrant** - Infrastructure as Code tool to spin up the machines needed for the cluster
+* **Ansible** - For downloading k3s to the master and worker nodes
+* **VirtualBox** - Virtualization software needed to host the linux VMs
+* **Git** - To download this repository
+
 ### Install Chocolatey
 
 Chocolatey is used to simplify installation of required packages. Run PowerShell as **Administrator** and execute:
