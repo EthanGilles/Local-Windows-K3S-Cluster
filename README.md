@@ -38,7 +38,6 @@ To run this project there are a few dependencies you must install first.
 
 * **Chocolatey** - package manager
 * **Vagrant** - Infrastructure as Code tool to spin up the machines needed for the cluster
-* **Ansible** - For downloading k3s to the master and worker nodes
 * **VirtualBox** - Virtualization software needed to host the linux VMs
 * **Git** - To download this repository
 
