@@ -1,0 +1,46 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install curl
+      apt:
+        name: curl
+        update_cache: yes
+
+- hosts: master
+  become: yes
+  tasks:
+    - name: Install K3s master
+      shell: |
+        curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /etc/rancher/k3s/k3s.yaml
+
+    - name: Get K3s node token
+      slurp:
+        src: /var/lib/rancher/k3s/server/node-token
+      register: node_token
+
+    - name: Set token for use by other hosts
+      set_fact:
+        node_token_decoded: "{{ node_token['content'] | b64decode | trim }}"
+      run_once: true
+
+- hosts: workers
+  become: yes
+  vars:
+    master_ip: "172.42.42.100"
+    node_token: "{{ hostvars['master']['node_token_decoded'] }}"
+  tasks:
+    - name: Debug master IP
+      debug:
+        msg: "Master IP is {{ master_ip }}"
+
+    - name: Debug node token
+      debug:
+        msg: "Node token is {{ node_token }}"
+
+    - name: Join worker to master
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN={{ node_token }} sh -
+      args:
+        creates: /etc/rancher/k3s/k3s.yaml
