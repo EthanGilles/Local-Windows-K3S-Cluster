@@ -11,7 +11,7 @@
   tasks:
     - name: Install K3s master
       shell: |
-        curl -sfL https://get.k3s.io | sh -
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip=172.42.42.100 --tls-san 172.42.42.100" sh -
       args:
         creates: /etc/rancher/k3s/k3s.yaml
 
@@ -31,16 +31,45 @@
     master_ip: "172.42.42.100"
     node_token: "{{ hostvars['master']['node_token_decoded'] }}"
   tasks:
-    - name: Debug master IP
-      debug:
-        msg: "Master IP is {{ master_ip }}"
-
-    - name: Debug node token
-      debug:
-        msg: "Node token is {{ node_token }}"
-
     - name: Join worker to master
       shell: |
         curl -sfL https://get.k3s.io | K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN={{ node_token }} sh -
       args:
         creates: /etc/rancher/k3s/k3s.yaml
+
+- hosts: master
+  become: yes
+  tasks:
+    - name: Copy k3s config to control node
+      fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: /tmp/k3s.yaml
+        flat: yes
+
+- hosts: control
+  become: yes
+  vars:
+    master_ip: "172.42.42.100"
+  tasks:
+    - name: Create .kube directory
+      file:
+        path: /home/vagrant/.kube
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: '0755'
+
+    - name: Move config to ~/.kube/config
+      copy:
+        src: /tmp/k3s.yaml
+        dest: /home/vagrant/.kube/config
+        owner: vagrant
+        group: vagrant
+        mode: '0600'
+
+    - name: Replace 127.0.0.1 with master IP in kubeconfig
+      become: false
+      replace:
+        path: /home/vagrant/.kube/config
+        regexp: '127\.0\.0\.1'
+        replace: "{{ master_ip }}"
