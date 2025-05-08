@@ -11,7 +11,7 @@
   tasks:
     - name: Install K3s master
       shell: |
-        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip=172.42.42.100 --tls-san 172.42.42.100" sh -
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --node-ip=172.42.42.100 --tls-san 172.42.42.100 --disable servicelb --disable traefik --kube-controller-manager-arg=bind-address=0.0.0.0 --kube-proxy-arg=metrics-bind-address=0.0.0.0 --kube-scheduler-arg=bind-address=0.0.0.0 --etcd-expose-metrics=true --kubelet-arg containerd=/run/k3s/containerd/containerd.sock" sh -
       args:
         creates: /etc/rancher/k3s/k3s.yaml
 
@@ -30,6 +30,9 @@
   vars:
     master_ip: "172.42.42.100"
     node_token: "{{ hostvars['master']['node_token_decoded'] }}"
+    worker_ips:
+      worker1: "172.42.42.102"
+      worker2: "172.42.42.103"
   tasks:
     - name: Join worker to master
       shell: |

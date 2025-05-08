@@ -56,15 +56,13 @@ Vagrant.configure("2") do |config|
     # install ansible and run playbook
     control.vm.provision "shell", privileged: false, path: "ansible.sh"
 
-    # install kubectl and Helm
+    # install kubectl
     control.vm.provision "shell", privileged: false, inline: <<-SHELL
       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       sudo mv kubectl /usr/local/bin/kubectl
       sudo chmod +x /usr/local/bin/kubectl
-      curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-      chmod 700 get_helm.sh
-      ./get_helm.sh
     SHELL
+
   end
 
 end
