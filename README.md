@@ -66,7 +66,7 @@ After installation, restart your terminal or run `refreshenv`.
 Once Chocolatey is installed, run the following in PowerShell (admin):
 
 ```Powershell
-choco install virtualbox vagrant git kubernetes-cli kubernetes helm -y
+choco install virtualbox vagrant git kubernetes-cli kubernetes-helm -y
 ```
 
 > You may also want to install an editor like VS Code or vim:
