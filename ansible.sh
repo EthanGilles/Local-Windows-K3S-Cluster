@@ -41,10 +41,13 @@ deactivate
 echo "[INFO] Ansible and pip requirements installed successfully."
 
 echo "[INFO] Copying ssh keys and running Ansible playbook."
+mkdir -p /home/vagrant/master_key
 mkdir -p /home/vagrant/worker1_key
 mkdir -p /home/vagrant/worker2_key
+cp /vagrant/.vagrant/machines/master/virtualbox/private_key /home/vagrant/master_key/private_key 
 cp /vagrant/.vagrant/machines/worker1/virtualbox/private_key /home/vagrant/worker1_key/private_key 
-cp /vagrant/.vagrant/machines/worker2/virtualbox/private_key  /home/vagrant/worker2_key/private_key 
+cp /vagrant/.vagrant/machines/worker2/virtualbox/private_key  /home/vagrant/worker2_key/private_key
+chmod 600 /home/vagrant/master_key/private_key
 chmod 600 /home/vagrant/worker1_key/private_key
 chmod 600 /home/vagrant/worker2_key/private_key
 rm -rf /tmp/provisioning
