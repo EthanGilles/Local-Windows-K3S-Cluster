@@ -16,7 +16,7 @@ Instructions on how to install Prometheus and Grafana to monitor the cluster are
 * [Overview](#overview)
 * [Requirements](#requirements)
   * [Install Chocolatey](#install-chocolatey)
-  * [Install VirtualBox, Vagrant, and Git](#install-virtualbox-vagrant-and-git)
+  * [Install Dependencies](#install-dependencies)
 * [Setup](#setup)
 * [Starting the Cluster](#starting-the-cluster)
 * [Verifying the Cluster](#verifying-the-cluster)
@@ -61,7 +61,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 After installation, restart your terminal or run `refreshenv`.
 
-### Install VirtualBox, Vagrant, and Git
+### Install Dependencies
 
 Once Chocolatey is installed, run the following in PowerShell (admin):
 
