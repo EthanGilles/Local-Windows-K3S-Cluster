@@ -44,6 +44,9 @@ grafana:
   defaultDashboardsTimezone: utc
   serviceMonitor:
     enabled: true
+  service:
+    type: NodePort
+    nodePort: 30000
   admin:
     existingSecret: grafana-admin-credentials
     userKey: admin-user
@@ -73,13 +76,7 @@ kubeDns:
   enabled: false
 
 kubeEtcd:
-  enabled: true
-  endpoints: # ips of master nodes
-    - 172.42.42.100
-  service:
-    enabled: true
-    port: 2381
-    targetPort: 2381
+  enabled: false
 
 kubeScheduler:
   enabled: true
@@ -155,6 +152,9 @@ prometheusOperator:
 
 prometheus:
   enabled: true
+  service:
+    type: NodePort
+    nodePort: 30001
   prometheusSpec:
     replicas: 1
     replicaExternalLabelName: "replica"
@@ -167,8 +167,3 @@ prometheus:
     walCompression: true
     scrapeInterval: 30s
     evaluationInterval: 30s
-
-
-
-thanosRuler:
-  enabled: false
